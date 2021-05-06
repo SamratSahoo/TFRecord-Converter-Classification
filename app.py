@@ -78,7 +78,7 @@ def convert_to_tfrecord(dataset_name, data_directory, class_map, segments=1, dir
                 file_path, label = sample
                 image = Image.open(file_path)
                 image = image.resize((224, 224))
-                image_raw = np.array(image).tostring()
+                image_raw = np.array(image).tobytes()
                 try:
                     features = {
                         'label': _int64_feature(class_map[label]),
@@ -104,9 +104,9 @@ def process_directory(data_directory: str):
     with open(os.path.join(data_directory, 'class_name2id.p'), 'wb') as p:
         pickle.dump(class_name2id, p, protocol=pickle.HIGHEST_PROTOCOL)
 
-    convert_to_tfrecord('train', data_dir + '\\train', class_name2id)
-    convert_to_tfrecord('validation', data_dir + '\\valid', class_name2id)
-    convert_to_tfrecord('test', data_dir + '\\test', class_name2id)
+    convert_to_tfrecord('train', data_dir + '/train', class_name2id)
+    convert_to_tfrecord('validation', data_dir + '/valid', class_name2id)
+    convert_to_tfrecord('test', data_dir + '/test', class_name2id)
 
 
 if __name__ == '__main__':
@@ -114,7 +114,7 @@ if __name__ == '__main__':
 
     parser.add_argument(
         '--data-directory',
-        default='C:\\Users\\Owner\\Documents\\TFRecord-Converter-Classification',
+        default=os.getcwd(),
         help='Directory where TFRecords will be stored')
 
     args = parser.parse_args()
